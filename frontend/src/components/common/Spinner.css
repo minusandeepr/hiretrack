@@ -1,0 +1,39 @@
+/**
+ * Spinner.css
+ * ---------------------------------------------------------------------------
+ * Styles for the Spinner component.
+ */
+
+.spinner-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+}
+
+.spinner-track {
+  stroke: var(--color-bg-elevated);
+}
+
+.spinner-arc {
+  stroke: url(#spinner-gradient);
+  stroke-dasharray: 80, 200;
+  stroke-dashoffset: 0;
+}
+
+.spinner-svg {
+  /* Gradient definition is inline in the SVG, but we still need a fallback */
+  --spinner-color: var(--color-accent-violet);
+}
+
+.spinner-arc {
+  stroke: var(--color-accent-violet);
+}
+
+.spinner-text {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  letter-spacing: 0.02em;
+}

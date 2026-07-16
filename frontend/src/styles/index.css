@@ -1,0 +1,189 @@
+/**
+ * index.css
+ * ---------------------------------------------------------------------------
+ * Global stylesheet for HireTrack ATS.
+ *
+ * Imports the design-token file, applies a CSS reset, sets base body styles,
+ * custom scrollbar theming, selection highlight, link resets, form-element
+ * defaults, and a handful of utility classes.
+ */
+
+@import './variables.css';
+
+/* =========================================================================
+ * CSS RESET
+ * ======================================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* =========================================================================
+ * BODY
+ * ======================================================================= */
+
+body {
+  font-family: var(--font-family);
+  font-weight: var(--font-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* =========================================================================
+ * SCROLLBAR (Webkit + Firefox)
+ * ======================================================================= */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-muted);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-text-muted) transparent;
+}
+
+/* =========================================================================
+ * SELECTION
+ * ======================================================================= */
+
+::selection {
+  background: rgba(139, 92, 246, 0.35);
+  color: var(--color-text-primary);
+}
+
+/* =========================================================================
+ * LINKS
+ * ======================================================================= */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =========================================================================
+ * IMAGES
+ * ======================================================================= */
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* =========================================================================
+ * LISTS
+ * ======================================================================= */
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* =========================================================================
+ * FORM ELEMENTS — inherit font everywhere
+ * ======================================================================= */
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* =========================================================================
+ * UTILITY CLASSES
+ * ======================================================================= */
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

@@ -1,0 +1,12 @@
+/**
+ * assets/
+ * ---------------------------------------------------------------------------
+ * Static assets for HireTrack ATS (images, icons, SVGs, fonts).
+ *
+ * Vite processes files imported from this directory — images are hashed for
+ * cache-busting and small files are inlined as data URIs.
+ *
+ * Usage:
+ *   import logoSrc from '../assets/logo.svg';
+ *   <img src={logoSrc} alt="HireTrack" />
+ */
