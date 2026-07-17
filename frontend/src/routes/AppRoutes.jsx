@@ -1,107 +1,71 @@
-/**
- * AppRoutes.jsx
- * ---------------------------------------------------------------------------
- * Central routing configuration for HireTrack ATS.
- *
- * Public routes:  /login, /register
- * Protected:      /dashboard (and all future feature routes)
- * Root (/) redirects authenticated users to /dashboard, others to /login.
- */
-
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import ProtectedRoute from '../components/ProtectedRoute.jsx';
+import DashboardLayout from '../layouts/DashboardLayout.jsx';
+import DashboardPage from '../pages/DashboardPage.jsx';
+import JobsPage from '../pages/JobsPage.jsx';
+import CandidatesPage from '../pages/CandidatesPage.jsx';
+import InterviewsPage from '../pages/InterviewsPage.jsx';
 import LoginPage from '../pages/LoginPage.jsx';
 import RegisterPage from '../pages/RegisterPage.jsx';
 import Spinner from '../components/common/Spinner.jsx';
 
-// ── Guest-only wrapper (redirect if already logged in) ──────────────────────
+/**
+ * FullScreenLoader
+ * Centered loading spinner used while auth state is being resolved.
+ */
+function FullScreenLoader() {
+  return (
+    <div className="flex-center" style={{ minHeight: '100vh' }}>
+      <Spinner size="lg" text="Loading..." />
+    </div>
+  );
+}
 
+/**
+ * GuestRoute
+ * Wrapper for public-only pages (login, register).
+ * Redirects already-authenticated users to /dashboard.
+ */
 function GuestRoute({ children }) {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
-    return (
-      <div className="flex-center" style={{ minHeight: '100vh' }}>
-        <Spinner size="lg" text="Loading…" />
-      </div>
-    );
+    return <FullScreenLoader />;
   }
 
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
 
-  return children;
+  return <>{children}</>;
 }
 
-// ── Temporary dashboard (will be replaced in Milestone 2) ───────────────────
+/**
+ * RootRedirect
+ * Sends authenticated users to /dashboard, others to /login.
+ */
+function RootRedirect() {
+  const { isAuthenticated, isLoading } = useAuth();
 
-function DashboardPlaceholder() {
-  const { user, logout } = useAuth();
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
 
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        gap: '20px',
-        padding: '24px',
-      }}
-    >
-      <h1
-        style={{
-          fontSize: 'var(--text-3xl)',
-          fontWeight: 'var(--font-bold)',
-          background: 'var(--color-accent-gradient)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        }}
-      >
-        Welcome, {user?.name}
-      </h1>
-      <p style={{ color: 'var(--color-text-secondary)', fontSize: 'var(--text-lg)' }}>
-        Role: <strong style={{ color: 'var(--color-accent-cyan)' }}>{user?.role}</strong>
-      </p>
-      <p style={{ color: 'var(--color-text-muted)', fontSize: 'var(--text-sm)' }}>
-        Dashboard, Jobs, Candidates, and Interviews will be built in Milestone 2.
-      </p>
-      <button
-        onClick={logout}
-        id="logout-btn"
-        style={{
-          marginTop: '8px',
-          padding: '10px 28px',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--color-border)',
-          color: 'var(--color-text-primary)',
-          background: 'var(--color-bg-elevated)',
-          cursor: 'pointer',
-          fontSize: 'var(--text-sm)',
-          fontWeight: 'var(--font-medium)',
-          transition: 'background var(--transition-fast)',
-        }}
-        onMouseEnter={(e) => (e.target.style.background = 'var(--color-bg-hover)')}
-        onMouseLeave={(e) => (e.target.style.background = 'var(--color-bg-elevated)')}
-      >
-        Sign out
-      </button>
-    </div>
-  );
+  return <Navigate to={isAuthenticated ? '/dashboard' : '/login'} replace />;
 }
 
-// ── Route tree ──────────────────────────────────────────────────────────────
-
+/**
+ * AppRoutes
+ * Top-level route configuration for the application.
+ */
 function AppRoutes() {
   return (
     <Routes>
-      {/* ── Root redirect ──────────────────────────────────────────────── */}
+      {/* Root redirect */}
       <Route path="/" element={<RootRedirect />} />
 
-      {/* ── Guest-only routes ──────────────────────────────────────────── */}
+      {/* Public / guest-only routes */}
       <Route
         path="/login"
         element={
@@ -119,17 +83,24 @@ function AppRoutes() {
         }
       />
 
-      {/* ── Protected routes ───────────────────────────────────────────── */}
+      {/* Protected routes: ProtectedRoute -> DashboardLayout -> pages */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard" element={<DashboardPlaceholder />} />
-        {/* Milestone 2 routes will be added here */}
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/jobs" element={<JobsPage />} />
+          <Route path="/candidates" element={<CandidatesPage />} />
+          <Route path="/interviews" element={<InterviewsPage />} />
+        </Route>
       </Route>
 
-      {/* ── 404 catch-all ──────────────────────────────────────────────── */}
+      {/* 404 catch-all */}
       <Route
         path="*"
         element={
-          <div className="flex-center" style={{ minHeight: '100vh', flexDirection: 'column', gap: '12px' }}>
+          <div
+            className="flex-center"
+            style={{ minHeight: '100vh', flexDirection: 'column', gap: '12px' }}
+          >
             <h1 style={{ color: 'var(--color-text-primary)', fontSize: 'var(--text-2xl)' }}>
               404
             </h1>
@@ -139,22 +110,6 @@ function AppRoutes() {
       />
     </Routes>
   );
-}
-
-// ── Root redirect helper ────────────────────────────────────────────────────
-
-function RootRedirect() {
-  const { isAuthenticated, isLoading } = useAuth();
-
-  if (isLoading) {
-    return (
-      <div className="flex-center" style={{ minHeight: '100vh' }}>
-        <Spinner size="lg" text="Loading…" />
-      </div>
-    );
-  }
-
-  return <Navigate to={isAuthenticated ? '/dashboard' : '/login'} replace />;
 }
 
 export default AppRoutes;
