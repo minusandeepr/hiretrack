@@ -19,6 +19,7 @@ import morgan from 'morgan';
 import corsOptions from './config/cors.js';
 import config from './config/env.js';
 import ApiError from './utils/ApiError.js';
+import routes from './routes/index.js';
 
 // ── Create app ──────────────────────────────────────────────────────────────
 const app = express();
@@ -53,7 +54,7 @@ app.get('/api/health', (_req, res) => {
 });
 
 // ── API routes ──────────────────────────────────────────────────────────────
-import routes from './routes/index.js';
+
 app.use('/api', routes);
 
 // ── 404 catch-all ───────────────────────────────────────────────────────────

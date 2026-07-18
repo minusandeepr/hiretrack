@@ -52,6 +52,7 @@ export const protect = asyncHandler(async (req, _res, next) => {
   let decoded;
   try {
     decoded = jwt.verify(token, config.jwtAccessSecret);
+    console.log("DECODED TOKEN:", decoded);
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
       throw ApiError.unauthorized('Your session has expired. Please log in again.', 'TOKEN_EXPIRED');

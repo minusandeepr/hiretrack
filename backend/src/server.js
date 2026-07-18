@@ -23,7 +23,7 @@ const startServer = async () => {
   const server = app.listen(config.port, () => {
     console.log(
       `\n🚀  HireTrack API running on http://localhost:${config.port}` +
-        `  [${config.nodeEnv}]\n`,
+      `  [${config.nodeEnv}]\n`,
     );
   });
 
