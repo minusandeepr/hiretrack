@@ -20,7 +20,7 @@ import {
     createCandidateValidator,
     updateCandidateValidator,
 } from '../validators/candidate.validator.js';
-console.log("✅ candidate.routes.js loaded");
+import upload from '../middleware/upload.middleware.js';
 
 
 const router = express.Router();
@@ -34,19 +34,7 @@ router.get('/', protect, getAllCandidates);
  * GET /api/candidates/:id
  */
 router.get('/:id', protect, getCandidateById);
-
-/**
- * POST /api/candidates
- */
-router.post(
-    '/',
-    protect,
-    ...createCandidateValidator,
-    validate,
-    createCandidate
-);
-
-/**
+/** 
  * PUT /api/candidates/:id
  */
 router.put(
@@ -61,5 +49,13 @@ router.put(
  * DELETE /api/candidates/:id
  */
 router.delete('/:id', protect, deleteCandidate);
+router.post(
+    '/',
+    protect,
+    upload.single('resume'),
+    ...createCandidateValidator,
+    validate,
+    createCandidate
+);
 
 export default router;

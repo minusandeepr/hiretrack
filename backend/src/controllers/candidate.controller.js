@@ -18,8 +18,13 @@ import {
  * Create Candidate
  */
 export const createCandidate = asyncHandler(async (req, res) => {
+    console.log("req.body:", req.body);
+    console.log("req.file:", req.file);
     const candidate = await createCandidateService({
         ...req.body,
+        resumeUrl: req.file
+            ? req.file.path.replace(/\\/g, '/')
+            : '',
         createdBy: req.user.id,
     });
 

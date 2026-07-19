@@ -20,6 +20,10 @@ import corsOptions from './config/cors.js';
 import config from './config/env.js';
 import ApiError from './utils/ApiError.js';
 import routes from './routes/index.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // ── Create app ──────────────────────────────────────────────────────────────
 const app = express();
@@ -56,6 +60,10 @@ app.get('/api/health', (_req, res) => {
 // ── API routes ──────────────────────────────────────────────────────────────
 
 app.use('/api', routes);
+app.use(
+  '/uploads',
+  express.static(path.join(__dirname, '../uploads'))
+);
 
 // ── 404 catch-all ───────────────────────────────────────────────────────────
 app.all('*', (req, _res, next) => {

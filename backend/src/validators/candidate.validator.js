@@ -28,9 +28,7 @@ export const createCandidateValidator = [
         .withMessage('Experience must be a number'),
 
     body('skills')
-        .optional()
-        .isArray()
-        .withMessage('Skills must be an array'),
+        .optional(),
 
     body('status')
         .optional()
@@ -72,9 +70,8 @@ export const updateCandidateValidator = [
         .withMessage('Experience must be a number'),
 
     body('skills')
-        .optional()
-        .isArray()
-        .withMessage('Skills must be an array'),
+        .optional(),
+
 
     body('status')
         .optional()
