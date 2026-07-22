@@ -41,9 +41,10 @@ export const createCandidate = asyncHandler(async (req, res) => {
  */
 export const getAllCandidates = asyncHandler(async (req, res) => {
     const filters = {
+        search: req.query.search,
         status: req.query.status,
         appliedJob: req.query.appliedJob,
-        createdBy: req.query.createdBy,
+        createdBy: req.user.id,
     };
 
     const candidates = await getAllCandidatesService(filters);

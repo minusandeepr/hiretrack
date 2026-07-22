@@ -31,6 +31,28 @@ export async function getAllCandidates(filters = {}) {
     if (filters.createdBy) {
         query.createdBy = filters.createdBy;
     }
+    if (filters.search) {
+        query.$or = [
+            {
+                fullName: {
+                    $regex: filters.search,
+                    $options: 'i',
+                },
+            },
+            {
+                email: {
+                    $regex: filters.search,
+                    $options: 'i',
+                },
+            },
+            {
+                phone: {
+                    $regex: filters.search,
+                    $options: 'i',
+                },
+            },
+        ];
+    }
 
     return Candidate.find(query)
         .populate('appliedJob', 'title department')
