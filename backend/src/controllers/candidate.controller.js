@@ -14,24 +14,39 @@ import {
     deleteCandidate as deleteCandidateService,
 } from '../services/candidate.service.js';
 
+import { analyzeResume } from "../services/resumeAnalysis.service.js";
+
 /**
  * Create Candidate
  */
 export const createCandidate = asyncHandler(async (req, res) => {
     console.log("req.body:", req.body);
     console.log("req.file:", req.file);
+
+    let resumeAnalysis = null;
+
+    if (req.file) {
+        try {
+            resumeAnalysis = await analyzeResume(req.file.path);
+            console.log("Gemini Resume Analysis:", resumeAnalysis);
+        } catch (error) {
+            console.error("Resume analysis failed:", error.message);
+        }
+    }
+
     const candidate = await createCandidateService({
         ...req.body,
         resumeUrl: req.file
-            ? req.file.path.replace(/\\/g, '/')
-            : '',
+            ? req.file.path.replace(/\\/g, "/")
+            : "",
+        resumeAnalysis,
         createdBy: req.user.id,
     });
 
     return ApiResponse.success(
         res,
         candidate,
-        'Candidate created successfully',
+        "Candidate created successfully",
         201
     );
 });

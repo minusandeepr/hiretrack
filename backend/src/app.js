@@ -22,6 +22,7 @@ import ApiError from './utils/ApiError.js';
 import routes from './routes/index.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import geminiRoutes from "./routes/gemini.routes.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -47,6 +48,7 @@ if (config.nodeEnv !== 'test') {
   app.use(morgan(config.isProduction ? 'combined' : 'dev'));
 }
 
+app.use("/api/gemini", geminiRoutes);
 // ── Health-check endpoint ───────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
   res.status(200).json({
@@ -64,6 +66,7 @@ app.use(
   '/uploads',
   express.static(path.join(__dirname, '../uploads'))
 );
+
 
 // ── 404 catch-all ───────────────────────────────────────────────────────────
 app.all('*', (req, _res, next) => {

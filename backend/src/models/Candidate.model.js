@@ -45,6 +45,11 @@ const candidateSchema = new mongoose.Schema(
             default: '',
         },
 
+        resumeAnalysis: {
+            type: mongoose.Schema.Types.Mixed,
+            default: null,
+        },
+
         appliedJob: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Job',
